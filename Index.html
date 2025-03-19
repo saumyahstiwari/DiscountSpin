@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Spin The Wheel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a2e52, #1a4b8c);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 20px;
+            overflow: hidden;
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: slideDown 1s ease-in-out;
+        }
+        
+        .wheel-container {
+            position: relative;
+            width: 100%;
+            max-width: 380px;
+            margin: 0 auto 30px;
+            aspect-ratio: 1;
+            animation: scaleIn 1s ease-in-out;
+        }
+        
+        .wheel {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            border-radius: 50%;
+            border: 8px solid #1e3c72;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5), 0 0 60px rgba(20, 92, 173, 0.7);
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.21, 0.99);
+            transform: rotate(0deg);
+            overflow: hidden;
+        }
+        
+        .wheel-section {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: bottom right;
+            clip-path: polygon(0 0, 100% 0, 0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .section-content {
+            position: absolute;
+            left: 30%;
+            top: 35%;
+            transform: rotate(45deg);
+            white-space: nowrap;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+        }
+        
+        .spin-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0a4da8, #062952);
+            border: none;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+            transition: all 0.3s ease;
+        }
+        
+        .spin-button:hover {
+            background: linear-gradient(135deg, #1257b3, #0d3468);
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.9);
+        }
+        
+        .spin-button:active {
+            transform: translate(-50%, -50%) scale(0.95);
+        }
+        
+        .arrow {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 40px solid #ffcc00;
+            z-index: 5;
+            filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.7));
+        }
+        
+        .result-container {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            display: none;
+            max-width: 380px;
+            width: 100%;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        .result-heading {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .result-message {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .play-once-notice {
+            margin-top: 15px;
+            background: rgba(255, 204, 0, 0.2);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+        }
+        
+        .thank-you {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes scaleIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        @media (max-width: 480px) {
+            .wheel-container {
+                max-width: 300px;
+            }
+            
+            .section-content {
+                font-size: 0.8rem;
+                left: 25%;
+                top: 30%;
+            }
+            
+            .spin-button {
+                width: 70px;
+                height: 70px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Spin to Win Cricket Offers!</h1>
+        <div class="wheel-container">
+            <div class="arrow"></div>
+            <div class="wheel" id="wheel">
+                <!-- 8 Sections will be added by JavaScript -->
+            </div>
+            <button class="spin-button" id="spinBtn">SPIN</button>
+        </div>
+        
+        <div class="result-container" id="resultContainer">
+            <h2 class="result-heading">Your Result:</h2>
+            <div class="result-message" id="resultMessage"></div>
+            <div class="play-once-notice">
+                Note: Each user can spin only once.
+            </div>
+            <div class="thank-you">
+                Thanks for playing!
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Define the offers - with their weights for probability
+            const offers = [
+                { name: "OUT", result: "NO OFFER", color: "#1a4b8c", weight: 20 },
+                { name: "OUT", result: "NO OFFER", color: "#0f3c78", weight: 20 },
+                { name: "LBW", result: "NO OFFER", color: "#2c5ca6", weight: 20 },
+                { name: "NO BALL", result: "NO OFFER", color: "#1e3c72", weight: 15 },
+                { name: "WIDE", result: "5% OFF ON TOTAL BILL", color: "#0a2e52", weight: 10 },
+                { name: "WIDE", result: "10% OFF ON TOTAL BILL", color: "#194f90", weight: 8 },
+                { name: "4 RUNS", result: "FREE DRINK", color: "#0d3468", weight: 4 },
+                { name: "6 RUNS", result: "FREE DESSERT", color: "#0a4da8", weight: 3 }
+            ];
+            
+            // Check if user has already spun
+            const hasSpun = localStorage.getItem('hasSpun');
+            const wheel = document.getElementById('wheel');
+            const spinBtn = document.getElementById('spinBtn');
+            const resultContainer = document.getElementById('resultContainer');
+            const resultMessage = document.getElementById('resultMessage');
+            
+            if (hasSpun) {
+                spinBtn.disabled = true;
+                spinBtn.textContent = "USED";
+                spinBtn.style.opacity = "0.6";
+                spinBtn.style.cursor = "not-allowed";
+                const previousResult = localStorage.getItem('spinResult');
+                if (previousResult) {
+                    resultMessage.textContent = previousResult;
+                    resultContainer.style.display = "block";
+                }
+            }
+            
+            // Create the wheel sections
+            function createWheel() {
+                for (let i = 0; i < offers.length; i++) {
+                    const section = document.createElement('div');
+                    section.className = 'wheel-section';
+                    section.style.transform = `rotate(${i * 45}deg)`;
+                    section.style.backgroundColor = offers[i].color;
+                    
+                    const content = document.createElement('div');
+                    content.className = 'section-content';
+                    content.textContent = offers[i].name;
+                    
+                    section.appendChild(content);
+                    wheel.appendChild(section);
+                }
+            }
+            
+            createWheel();
+            
+            // Spin the wheel function
+            spinBtn.addEventListener('click', function() {
+                if (hasSpun) {
+                    return; // Prevent spinning again
+                }
+                
+                spinBtn.disabled = true;
+                
+                // Weighted random selection
+                const weights = offers.map(offer => offer.weight);
+                const totalWeight = weights.reduce((a, b) => a + b, 0);
+                let random = Math.random() * totalWeight;
+                
+                let selectedIndex = 0;
+                for (let i = 0; i < weights.length; i++) {
+                    random -= weights[i];
+                    if (random <= 0) {
+                        selectedIndex = i;
+                        break;
+                    }
+                }
+                
+                // Calculate rotation
+                const spinDegrees = 5 * 360 + (8 - selectedIndex) * 45;
+                
+                wheel.style.transform = `rotate(${spinDegrees}deg)`;
+                
+                // After animation completes
+                setTimeout(() => {
+                    const selectedOffer = offers[selectedIndex];
+                    resultMessage.textContent = `${selectedOffer.name}: ${selectedOffer.result}`;
+                    resultContainer.style.display = "block";
+                    
+                    // Save to localStorage
+                    localStorage.setItem('hasSpun', 'true');
+                    localStorage.setItem('spinResult', `${selectedOffer.name}: ${selectedOffer.result}`);
+                    
+                    spinBtn.textContent = "USED";
+                    spinBtn.style.opacity = "0.6";
+                    spinBtn.style.cursor = "not-allowed";
+                }, 4000);
+            });
+        });
+    </script>
+</body>
+  </html>
